@@ -1,0 +1,25 @@
+{
+  "sframe_schema_version": "0.1-draft",
+  "meta": {
+    "title": "AIC-RSAM: AI Room-Service Adoption Model (synthetic example instrument, draft stage)",
+    "author": [
+      {
+        "name": "Sharafuddin, Mohammed Ali",
+        "orcid": "0000-0001-5247-2964"
+      }
+    ],
+    "instrument_hash": "5f63d98d54b8fe58f080567fa3c54bb8fbf264c56f9cc5dc07bb8a4691f19c1a"
+  },
+  "layers": {
+    "instrument": {
+      "hash": "5f63d98d54b8fe58f080567fa3c54bb8fbf264c56f9cc5dc07bb8a4691f19c1a",
+      "previous_hash": null,
+      "timestamp": "2027-01-10T09:00:00Z"
+    },
+    "version": {
+      "hash": "a993d8a9c6844a2cf1a30b7aa4de8cf69f862672cb0950daf4aab5d1dc90a3a1",
+      "previous_hash": "5f63d98d54b8fe58f080567fa3c54bb8fbf264c56f9cc5dc07bb8a4691f19c1a",
+      "timestamp": "2027-01-12T09:00:00Z"
+    }
+  }
+}

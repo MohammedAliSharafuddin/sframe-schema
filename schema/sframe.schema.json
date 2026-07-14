@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MohammedAliSharafuddin/sframe-schema/schema/sframe.schema.json",
+  "title": "sframe",
+  "description": "DRAFT v0.1. Not stable. Schema for a surveyframe .sframe instrument object: a typed research instrument (items, analysis plan, model layer) with a chained five-layer SHA-256 provenance manifest and a derivative citation block. See spec.Rmd for the full specification and the chain algorithm.",
+  "type": "object",
+  "required": ["sframe_schema_version", "meta", "layers"],
+  "properties": {
+    "sframe_schema_version": {
+      "type": "string",
+      "const": "0.1-draft",
+      "description": "Version of this schema, independent of the surveyframe package version."
+    },
+    "meta": {
+      "type": "object",
+      "required": ["title", "author"],
+      "properties": {
+        "title": { "type": "string" },
+        "author": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "orcid": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]$"
+              }
+            }
+          }
+        },
+        "instrument_hash": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Layer 1 hash. Null until write_sframe() has been called."
+        }
+      }
+    },
+    "layers": {
+      "type": "object",
+      "description": "The five-layer chained provenance manifest. Each present layer's hash is a function of that layer's content plus the previous layer's hash (Merkle-style), seeded from a fixed genesis string at Layer 1. A layer absent here means that lifecycle stage has not occurred yet; the object is still a valid sframe, just not fully citable (see bibliographic.lifecycle_stage).",
+      "properties": {
+        "instrument": { "$ref": "#/$defs/layer" },
+        "version": { "$ref": "#/$defs/layer" },
+        "response": { "$ref": "#/$defs/layer" },
+        "analysis_reporting": { "$ref": "#/$defs/layer" },
+        "verification_manifest": { "$ref": "#/$defs/layer" }
+      }
+    },
+    "bibliographic": {
+      "type": "object",
+      "description": "The Derivative Citation Model block. Individual instruments carry no DOI; identity is layers.verification_manifest.hash. The only DOI in any rendered citation belongs to the parent surveyframe package, read from its installed CITATION.cff at render time, not stored here.",
+      "properties": {
+        "type": { "type": "string", "const": "dataset" },
+        "title": { "type": "string" },
+        "lifecycle_stage": {
+          "type": "string",
+          "pattern": "^[1-5]/5$",
+          "description": "Count of layers present out of five. Anything short of 5/5 renders as [DRAFT] / NOT FULLY CITABLE."
+        },
+        "layer_timestamps": {
+          "type": "array",
+          "items": { "type": "string", "format": "date-time" }
+        },
+        "parent_citation_lock": {
+          "type": "string",
+          "description": "Deterministic key of the parent surveyframe package CITATION.cff entry this instrument is locked to. Required; validation rejects a bibliographic block with no parent lock."
+        }
+      },
+      "required": ["type", "title", "lifecycle_stage", "parent_citation_lock"]
+    }
+  },
+  "$defs": {
+    "layer": {
+      "type": "object",
+      "required": ["hash", "timestamp"],
+      "properties": {
+        "hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "SHA-256 of (this layer's content + previous layer's hash), hex-encoded."
+        },
+        "previous_hash": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Null only for the first present layer, which chains from a fixed genesis string instead."
+        },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

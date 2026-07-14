@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: >-
+  If you use this schema, cite it as below. Do not cite this repository as a
+  stable standard before the 1.0 tag exists (current status: v0.1-draft).
+title: "sframe-schema: A JSON Schema and Derivative Citation Model for Tamper-Evident Survey Instruments"
+type: software
+version: 0.1-draft
+date-released: "2026-07-14"
+authors:
+  - family-names: Sharafuddin
+    given-names: "Mohammed Ali"
+    orcid: "https://orcid.org/0000-0001-5247-2964"
+    affiliation: "Qasim Ibrahim School of Business, Villa College, Male, Maldives"
+license: CC-BY-4.0
+repository-code: "https://github.com/MohammedAliSharafuddin/sframe-schema"
+identifiers:
+  - type: doi
+    value: "<PENDING_ZENODO_DOI>"
+    description: "Zenodo DOI for this repository. Not yet registered; register at 1.0, not before."
+preferred-citation:
+  type: software
+  title: "sframe-schema: A JSON Schema and Derivative Citation Model for Tamper-Evident Survey Instruments"
+  authors:
+    - family-names: Sharafuddin
+      given-names: "Mohammed Ali"
+      orcid: "https://orcid.org/0000-0001-5247-2964"
+  version: 0.1-draft
+  date-released: "2026-07-14"
+references:
+  - type: preprint
+    title: "Social Science Research 6.0: A Proof-of-Integrity Framework for Tamper-Evident Survey Instruments Using an Open-Source R Package"
+    authors:
+      - family-names: Sharafuddin
+        given-names: "Mohammed Ali"
+    doi: "10.31235/osf.io/jmbv8_v1"
+  - type: software
+    title: "surveyframe: Survey Instrument Workflows"
+    authors:
+      - family-names: Sharafuddin
+        given-names: "Mohammed Ali"
+    notes: "Parent package. This schema documents surveyframe's .sframe object; it is not a dependency of it."

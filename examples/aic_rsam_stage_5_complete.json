@@ -1,0 +1,53 @@
+{
+  "sframe_schema_version": "0.1-draft",
+  "meta": {
+    "title": "AIC-RSAM: AI Room-Service Adoption Model (synthetic example instrument)",
+    "author": [
+      {
+        "name": "Sharafuddin, Mohammed Ali",
+        "orcid": "0000-0001-5247-2964"
+      }
+    ],
+    "instrument_hash": "5f63d98d54b8fe58f080567fa3c54bb8fbf264c56f9cc5dc07bb8a4691f19c1a"
+  },
+  "layers": {
+    "instrument": {
+      "hash": "5f63d98d54b8fe58f080567fa3c54bb8fbf264c56f9cc5dc07bb8a4691f19c1a",
+      "previous_hash": null,
+      "timestamp": "2027-01-10T09:00:00Z"
+    },
+    "version": {
+      "hash": "a993d8a9c6844a2cf1a30b7aa4de8cf69f862672cb0950daf4aab5d1dc90a3a1",
+      "previous_hash": "5f63d98d54b8fe58f080567fa3c54bb8fbf264c56f9cc5dc07bb8a4691f19c1a",
+      "timestamp": "2027-01-12T09:00:00Z"
+    },
+    "response": {
+      "hash": "57a1e5aa67242eae258646ff58a8cefb97370e2385799c012940a381b0149267",
+      "previous_hash": "a993d8a9c6844a2cf1a30b7aa4de8cf69f862672cb0950daf4aab5d1dc90a3a1",
+      "timestamp": "2027-02-01T09:00:00Z"
+    },
+    "analysis_reporting": {
+      "hash": "bfd01212dafa797fa9e87acce7ae2c307e199544b01892d9101635a3ace8e8b5",
+      "previous_hash": "57a1e5aa67242eae258646ff58a8cefb97370e2385799c012940a381b0149267",
+      "timestamp": "2027-02-10T09:00:00Z"
+    },
+    "verification_manifest": {
+      "hash": "c6d40897112d6749a090c32bd971159a60aa19aef4f0dec0fe9b2a163fc4c4b6",
+      "previous_hash": "bfd01212dafa797fa9e87acce7ae2c307e199544b01892d9101635a3ace8e8b5",
+      "timestamp": "2027-02-11T09:00:00Z"
+    }
+  },
+  "bibliographic": {
+    "type": "dataset",
+    "title": "AIC-RSAM: AI Room-Service Adoption Model",
+    "lifecycle_stage": "5/5",
+    "layer_timestamps": [
+      "2027-01-10T09:00:00Z",
+      "2027-01-12T09:00:00Z",
+      "2027-02-01T09:00:00Z",
+      "2027-02-10T09:00:00Z",
+      "2027-02-11T09:00:00Z"
+    ],
+    "parent_citation_lock": "surveyframe2027"
+  }
+}
