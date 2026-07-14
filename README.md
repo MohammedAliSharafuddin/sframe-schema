@@ -41,13 +41,12 @@ depend on surveyframe. The schema will not be declared stable (1.0) until
 surveyframe v0.9 ships the chained Layer 5 manifest hash this schema
 documents, and has been validated against real v0.9 output.
 
-## Publications
+## Related work
 
-This schema is the subject of a forthcoming MethodsX paper (schema standard,
-non-R validation) and is cited by a forthcoming Journal of Informetrics paper
-(the Derivative Citation Model as informetric infrastructure). Both are gated
-on this repository reaching 1.0. The underlying five-layer integrity
-framework is described in the SSR 6.0 preprint:
+The five-layer chained provenance framework this schema documents is
+described in Sharafuddin (2026), *Social Science Research 6.0: A
+Proof-of-Integrity Framework for Tamper-Evident Survey Instruments Using an
+Open-Source R Package*, SocArXiv preprint:
 [10.31235/osf.io/jmbv8_v1](https://doi.org/10.31235/osf.io/jmbv8_v1).
 
 ## Licence
