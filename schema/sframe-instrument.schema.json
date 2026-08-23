@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MohammedAliSharafuddin/sframe-schema/schema/sframe-instrument.schema.json",
+  "title": "sframe, instrument profile",
+  "description": "The implemented profile: the shape surveyframe's write_sframe() emits as of CRAN 0.4.0. This is Layer 1 (instrument) of the five-layer model in sframe.schema.json, serialised flat rather than nested under `layers`, plus the verification hash. A file conforming to this profile is a complete, verifiable instrument declaration. It is not a complete provenance chain: response, analysis/reporting and manifest layers arrive with surveyframe 0.6.",
+  "type": "object",
+  "required": ["sframe_format", "hash", "meta", "items"],
+  "properties": {
+    "sframe_format": {
+      "type": "string",
+      "description": "Version of the file format itself, distinct from the instrument's own `version` and from the package version. Consumers negotiate on this.",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "hash": {
+      "type": "object",
+      "required": ["algo", "value"],
+      "description": "SHA-256 over the canonical serialisation with `hash.value` blanked. Canonicalisation sorts object keys alphabetically and recurses. A reference JavaScript implementation is sframeCanon() in surveyframe's survey_builder.html.",
+      "properties": {
+        "algo": { "const": "sha256" },
+        "value": { "type": "string", "pattern": "^[0-9a-f]{64}$|^$" }
+      }
+    },
+    "version": { "type": ["string", "null"], "description": "The instrument's version, not the format's." },
+    "meta": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "title": { "type": "string" },
+        "version": { "type": ["string", "null"] },
+        "description": { "type": ["string", "null"] },
+        "authors": { "type": ["array", "string", "null"], "items": { "type": "string" } },
+        "languages": { "type": ["array", "string", "null"], "items": { "type": "string" } },
+        "validated": { "type": ["boolean", "null"] },
+        "created_at": { "type": ["string", "null"] }
+      }
+    },
+    "items": {
+      "type": "array",
+      "description": "Declared items. `type` carries the measurement intent a consumer needs to pick a legitimate analysis.",
+      "items": {
+        "type": "object",
+        "required": ["id", "type"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]*$" },
+          "label": { "type": ["string", "null"] },
+          "type": {
+            "type": "string",
+            "enum": ["likert", "single_choice", "multiple_choice", "numeric", "text",
+                     "textarea", "date", "matrix", "slider", "ranking", "rating",
+                     "pairwise_comparison", "criteria_weight", "section_break", "text_block"]
+          },
+          "required": { "type": ["boolean", "null"] },
+          "choice_set": { "type": ["string", "null"] },
+          "reverse": { "type": ["boolean", "null"] },
+          "scale_id": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "choices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "values"],
+        "properties": {
+          "id": { "type": "string" },
+          "values": { "type": "array" },
+          "labels": { "type": ["array", "null"] },
+          "allow_other": { "type": ["boolean", "null"] },
+          "randomise": { "type": ["boolean", "null"] }
+        }
+      }
+    },
+    "scales": {
+      "type": "array",
+      "description": "Declared scales. A consumer reads these to know which items form a construct, which is what a bare CSV cannot express.",
+      "items": {
+        "type": "object",
+        "required": ["id", "items"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": ["string", "null"] },
+          "items": { "type": "array", "items": { "type": "string" } },
+          "method": { "type": ["string", "null"] },
+          "min_valid": { "type": ["integer", "null"] }
+        }
+      }
+    },
+    "branching": { "type": "array" },
+    "checks": { "type": "array" },
+    "analysis_plan": {
+      "type": "array",
+      "description": "Pre-declared analyses. Present here is what makes the file a pre-registration rather than a description."
+    },
+    "models": { "type": "array" },
+    "render": { "type": ["array", "object", "null"] }
+  }
+}

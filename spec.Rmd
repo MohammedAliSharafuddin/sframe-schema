@@ -25,6 +25,43 @@ This specification defines two things:
 It does not define the surveyframe R package's internal implementation,
 which is documented separately in that package.
 
+### 1.1 Conformance profiles
+
+Added 2026-08-22. The specification defines two profiles. An object is
+conformant if it satisfies either.
+
+| Profile | Schema file | Covers | Status |
+|---|---|---|---|
+| `instrument` | `schema/sframe-instrument.schema.json` | Layer 1 and the verification hash, serialised flat rather than nested under `layers` | implemented, surveyframe 0.4.0 |
+| `full` | `schema/sframe.schema.json` | The complete five-layer chain of Section 2 | target; layers 3 to 5 arrive with surveyframe 0.6 |
+
+The profiles exist because the two were previously out of step. The reference
+validator passed this specification's own examples and rejected every real
+file the reference implementation produced, failing on
+`sframe_schema_version`, `layers` and `meta.author`. The five-layer model is
+the target and is unchanged. The instrument profile records what is shipping,
+so a consumer has something real to implement against today.
+
+The reference validator selects the profile from the object's own shape and
+reports which one it applied.
+
+### 1.2 Format version
+
+An object states its own format in `sframe_format`, a string of the form
+`MAJOR.MINOR`, currently `1.0`. This is distinct from three other version
+numbers in play, and the distinction matters:
+
+| Field | Versions what |
+|---|---|
+| `sframe_format` | the file's structure |
+| `sframe_schema_version` | the schema document (`full` profile only) |
+| `version` / `meta.version` | the research instrument itself |
+| the R package version | the implementation |
+
+Consumers negotiate on `sframe_format`. Objects written before 2026-08-22
+carry no such field and predate format versioning; they remain readable by
+surveyframe but conform to neither profile.
+
 ## 2. The five-layer chain
 
 | Layer | Name | What it covers | Hashed over |
@@ -92,7 +129,10 @@ DDI Codebook/DDI-Lifecycle and CodeMeta crosswalk tools before 1.0.
 
 ## 5. Validation rules
 
-1. `sframe_schema_version` must match the schema version in use.
+0. `sframe_format`, where present, must match `^[0-9]+\.[0-9]+$`. Its
+   absence indicates an object written before format versioning.
+1. `sframe_schema_version` must match the schema version in use
+   (`full` profile only; the `instrument` profile uses `sframe_format`).
 2. `meta.author[].orcid`, if present, must match the ORCID checksum pattern.
 3. Each present entry under `layers` must have `hash` matching `^[0-9a-f]{64}$`.
 4. Layer chaining: for any two adjacent present layers (in the fixed order
@@ -107,12 +147,16 @@ DDI Codebook/DDI-Lifecycle and CodeMeta crosswalk tools before 1.0.
 
 ## 6. Status and next steps
 
-v0.1-draft exists to establish a dated, public reference point for this
-schema's identity ahead of the chain algorithm being finalised in
-surveyframe v0.9. Before 1.0:
+v0.2-draft, 2026-08-22. The `instrument` profile is validated against real
+output from surveyframe 0.4.0, replacing the synthetic examples the previous
+draft relied on. The `full` profile remains unvalidated against a real
+five-layer object, because layers 3 to 5 are not implemented; those arrive
+with surveyframe 0.6 (renumbered 2026-08-19 from the former 0.9).
 
-- Validate this schema against real v0.9 output (not synthetic examples).
+Before 1.0:
+
+- Validate the `full` profile against real surveyframe 0.6 output, not
+  synthetic examples.
 - Complete the DDI/CodeMeta/PROV-O crosswalk check in Section 4.
-- Register a Zenodo DOI for this repository and a FAIRsharing "Standard"
-  record.
+- Register a FAIRsharing "Standard" record.
 - Freeze `sframe_schema_version` at `1.0`.

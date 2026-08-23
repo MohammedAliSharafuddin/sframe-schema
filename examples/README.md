@@ -20,3 +20,17 @@ hashes from a real run against the shipped surveyframe v0.9, the same
 discipline the SSR 6.0 preprint followed (see
 `ssr60-integrity-framework/CLAUDE.md`: "SHA-256 hash values in the manuscript
 must come from the actual demo script output, not invented").
+
+## Instrument profile (added 2026-08-22)
+
+| File | What it is |
+|---|---|
+| `instrument_profile_surveyframe_040.sframe` | Real output from surveyframe 0.4.0's `write_sframe()`. Validates against the `instrument` profile. Not synthetic. |
+| `instrument_profile_surveyframe_040_responses.csv` | The matching response data, 80 rows. |
+
+A `.sframe` carries the instrument only, never the responses. The two files
+join on column id: every `items[].id` in the instrument is a column in the
+CSV. This pairing is the shape a consuming application reads.
+
+The other examples in this directory are hand-written illustrations of the
+`full` five-layer profile, which no implementation emits yet.

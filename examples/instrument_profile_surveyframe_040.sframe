@@ -1,0 +1,97 @@
+{
+  "sframe_format": "1.0",
+  "hash": {
+    "algo": "sha256",
+    "value": "54ce7fedb2c4115161542d9f5e6d50555daa1aa74da883d67cbbb87d568fdf1d"
+  },
+  "version": "0.1.0",
+  "meta": {
+    "title": "Customer loyalty scale (teaching sample)",
+    "version": "0.1.0",
+    "description": "Reliability demo: 5 Likert items, one nominal grouping variable.",
+    "authors": null,
+    "languages": "en",
+    "validated": true,
+    "created_at": "2026-08-22T17:55:30Z"
+  },
+  "items": [
+    {
+      "id": "segment",
+      "label": "Customer segment",
+      "type": "single_choice",
+      "required": false,
+      "choice_set": "seg",
+      "reverse": false
+    },
+    {
+      "id": "loy1",
+      "label": "I would recommend this company",
+      "type": "likert",
+      "required": false,
+      "choice_set": "agree5",
+      "reverse": false
+    },
+    {
+      "id": "loy2",
+      "label": "I intend to keep buying here",
+      "type": "likert",
+      "required": false,
+      "choice_set": "agree5",
+      "reverse": false
+    },
+    {
+      "id": "loy3",
+      "label": "I feel loyal to this brand",
+      "type": "likert",
+      "required": false,
+      "choice_set": "agree5",
+      "reverse": false
+    },
+    {
+      "id": "loy4",
+      "label": "I rarely consider competitors",
+      "type": "likert",
+      "required": false,
+      "choice_set": "agree5",
+      "reverse": false
+    },
+    {
+      "id": "loy5",
+      "label": "This company deserves my trust",
+      "type": "likert",
+      "required": false,
+      "choice_set": "agree5",
+      "reverse": false
+    }
+  ],
+  "choices": [
+    {
+      "id": "agree5",
+      "values": [1, 2, 3, 4, 5],
+      "labels": ["Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agree"],
+      "allow_other": false,
+      "randomise": false
+    },
+    {
+      "id": "seg",
+      "values": ["Retail", "Corporate"],
+      "labels": ["Retail", "Corporate"],
+      "allow_other": false,
+      "randomise": false
+    }
+  ],
+  "scales": [
+    {
+      "id": "loyalty",
+      "label": "Customer loyalty",
+      "items": ["loy1", "loy2", "loy3", "loy4", "loy5"],
+      "method": "mean",
+      "min_valid": null
+    }
+  ],
+  "branching": [],
+  "checks": [],
+  "analysis_plan": [],
+  "models": [],
+  "render": []
+}

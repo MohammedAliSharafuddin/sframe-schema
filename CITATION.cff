@@ -4,8 +4,8 @@ message: >-
   stable standard before the 1.0 tag exists (current status: v0.1-draft).
 title: "sframe-schema: A JSON Schema and Derivative Citation Model for Tamper-Evident Survey Instruments"
 type: software
-version: 0.1-draft
-date-released: "2026-07-14"
+version: 0.2-draft
+date-released: "2026-08-22"
 authors:
   - family-names: Sharafuddin
     given-names: "Mohammed Ali"
@@ -16,7 +16,7 @@ repository-code: "https://github.com/MohammedAliSharafuddin/sframe-schema"
 identifiers:
   - type: doi
     value: "<PENDING_ZENODO_DOI>"
-    description: "Zenodo DOI for this repository. Not yet registered; register at 1.0, not before."
+    description: "Zenodo DOI for this repository. Replace on deposit."
 preferred-citation:
   type: software
   title: "sframe-schema: A JSON Schema and Derivative Citation Model for Tamper-Evident Survey Instruments"
@@ -24,8 +24,8 @@ preferred-citation:
     - family-names: Sharafuddin
       given-names: "Mohammed Ali"
       orcid: "https://orcid.org/0000-0001-5247-2964"
-  version: 0.1-draft
-  date-released: "2026-07-14"
+  version: 0.2-draft
+  date-released: "2026-08-22"
 references:
   - type: preprint
     title: "Social Science Research 6.0: A Proof-of-Integrity Framework for Tamper-Evident Survey Instruments Using an Open-Source R Package"
@@ -38,4 +38,4 @@ references:
     authors:
       - family-names: Sharafuddin
         given-names: "Mohammed Ali"
-    notes: "Parent package. This schema documents surveyframe's .sframe object; it is not a dependency of it."
+    notes: "Reference implementation. This schema documents surveyframe's .sframe object and is not a dependency of it. The instrument profile matches CRAN 0.4.0 output."

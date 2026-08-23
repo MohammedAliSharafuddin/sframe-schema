@@ -1,6 +1,29 @@
 # sframe-schema
 
-**Status: `v0.1-draft` — not stable. Do not treat as a frozen standard.**
+**Status: `v0.1-draft`, not stable. Do not treat as a frozen standard.**
+
+## Conformance profiles (added 2026-08-22)
+
+The schema defines two profiles. A file is valid if it conforms to either.
+
+| Profile | Schema | What it is | Status |
+|---|---|---|---|
+| `instrument` | `schema/sframe-instrument.schema.json` | Layer 1 plus the verification hash, serialised flat. What surveyframe's `write_sframe()` emits. | **implemented, CRAN 0.4.0** |
+| `full` | `schema/sframe.schema.json` | The complete five-layer provenance chain. | target, layers 3 to 5 land with surveyframe 0.6 |
+
+The validator detects the profile from the object's own shape and reports
+which one it checked.
+
+This split exists because the two were previously out of step: the reference
+validator passed this repository's hand-written examples and **rejected every
+real file the reference implementation produced**, on `sframe_schema_version`,
+`layers` and `meta.author`. The five-layer model is the target and is not
+being abandoned. The instrument profile records what is actually shipping, so
+a consumer can implement against something real today.
+
+Files carry `sframe_format` to say which shape they are. Files written before
+2026-08-22 have no such field and conform to neither profile; they are
+readable by surveyframe but predate format versioning.
 
 A standalone, independently versioned JSON Schema for the `.sframe` object
 defined by the [surveyframe](https://CRAN.R-project.org/package=surveyframe) R
@@ -28,7 +51,8 @@ and the chain algorithm.
 
 | Path | Purpose |
 |---|---|
-| `schema/sframe.schema.json` | The JSON Schema, `v0.1-draft` |
+| `schema/sframe.schema.json` | The JSON Schema, `full` profile, `v0.1-draft` |
+| `schema/sframe-instrument.schema.json` | The JSON Schema, `instrument` profile, matches surveyframe 0.4.0 |
 | `spec.Rmd` | Formal specification: fields, validation rules, chain algorithm, DDI/CodeMeta/PROV-O mappings |
 | `validator/validate_sframe.py` | Reference validator in Python (no R dependency) |
 | `examples/` | Example `.sframe`-shaped JSON at each lifecycle stage |
