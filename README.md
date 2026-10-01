@@ -8,7 +8,7 @@ The schema defines two profiles. A file is valid if it conforms to either.
 
 | Profile | Schema | What it is | Status |
 |---|---|---|---|
-| `instrument` | `schema/sframe-instrument.schema.json` | Layer 1 plus the verification hash, serialised flat. What surveyframe's `write_sframe()` emits. | **implemented, CRAN 0.4.0** |
+| `instrument` | `schema/sframe-instrument.schema.json` | Layer 1 plus the verification hash, serialised flat. What surveyframe's `write_sframe()` emits. | **implemented, CRAN 0.4.0, extended for 0.4.3** |
 | `full` | `schema/sframe.schema.json` | The complete five-layer provenance chain. | target, layers 3 to 5 land with surveyframe 0.6 |
 
 The validator detects the profile from the object's own shape and reports
@@ -34,6 +34,17 @@ This repository is decoupled from surveyframe's own release cycle on purpose:
 the schema should be usable by tooling in any language, not only R, and its
 version number should track schema stability, not package features.
 
+### Instrument profile changes, 2026-10-01
+
+- `references` added, for surveyframe 0.4.3: the works an instrument cites,
+  as CSL-JSON records, each with optional `cited_by` targets naming the
+  item, scale, plan block or model that cites it. Optional, and present only
+  when non-empty, so earlier files are unaffected.
+- `designs` and `amendments` documented. surveyframe has written both since
+  0.4.0, and the profile accepted them only because it does not forbid
+  extra keys, so a consumer had no description of either.
+- No field became required, so every file valid before is valid now.
+
 ## Why hash-based identity, not DOIs
 
 An `.sframe` instrument is never assigned its own DOI. Its identity is a
@@ -52,7 +63,7 @@ and the chain algorithm.
 | Path | Purpose |
 |---|---|
 | `schema/sframe.schema.json` | The JSON Schema, `full` profile, `v0.1-draft` |
-| `schema/sframe-instrument.schema.json` | The JSON Schema, `instrument` profile, matches surveyframe 0.4.0 |
+| `schema/sframe-instrument.schema.json` | The JSON Schema, `instrument` profile, matches surveyframe 0.4.3 |
 | `spec.Rmd` | Formal specification: fields, validation rules, chain algorithm, DDI/CodeMeta/PROV-O mappings |
 | `validator/validate_sframe.py` | Reference validator in Python (no R dependency) |
 | `examples/` | Example `.sframe`-shaped JSON at each lifecycle stage |

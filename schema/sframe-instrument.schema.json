@@ -2,9 +2,23 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/MohammedAliSharafuddin/sframe-schema/schema/sframe-instrument.schema.json",
   "title": "sframe, instrument profile",
-  "description": "The implemented profile: the shape surveyframe's write_sframe() emits as of CRAN 0.4.0. This is Layer 1 (instrument) of the five-layer model in sframe.schema.json, serialised flat rather than nested under `layers`, plus the verification hash. A file conforming to this profile is a complete, verifiable instrument declaration. It is not a complete provenance chain: response, analysis/reporting and manifest layers arrive with surveyframe 0.6.",
+  "description": "The implemented profile: the shape surveyframe's write_sframe() emits as of 0.4.3. This is Layer 1 (instrument) of the five-layer model in sframe.schema.json, serialised flat rather than nested under `layers`, plus the verification hash. A file conforming to this profile is a complete, verifiable instrument declaration. It is not a complete provenance chain: response, analysis/reporting and manifest layers arrive with surveyframe 0.6.",
   "type": "object",
   "required": ["sframe_format", "hash", "meta", "items"],
+  "$defs": {
+    "cslNames": {
+      "type": "array",
+      "description": "CSL names: {\"family\", \"given\"} for a person, {\"literal\"} for an organisation.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "family": { "type": "string" },
+          "given": { "type": "string" },
+          "literal": { "type": "string" }
+        }
+      }
+    }
+  },
   "properties": {
     "sframe_format": {
       "type": "string",
@@ -92,6 +106,68 @@
       "description": "Pre-declared analyses. Present here is what makes the file a pre-registration rather than a description."
     },
     "models": { "type": "array" },
-    "render": { "type": ["array", "object", "null"] }
+    "render": { "type": ["array", "object", "null"] },
+    "designs": {
+      "type": "array",
+      "description": "Optional conjoint designs (surveyframe 0.4.0). Present only when the instrument declares at least one, so an instrument without them hashes as it did before the field existed."
+    },
+    "amendments": {
+      "type": "array",
+      "description": "Optional disclosed-revision log (surveyframe 0.4.0), appended by amend_sframe(). Present only when there is at least one entry. previous_hash and new_hash are SHA-256 content hashes over every top-level field except hash, amendments and references.",
+      "items": {
+        "type": "object",
+        "required": ["timestamp", "reason_code", "reason_text", "tier", "signoff", "previous_hash", "new_hash"],
+        "properties": {
+          "timestamp": { "type": "string" },
+          "reason_code": { "type": "string", "enum": ["data_correction", "bot_removal", "model_respecification", "instrument_revision", "other"] },
+          "reason_text": { "type": "string", "minLength": 1 },
+          "tier": { "type": "string", "enum": ["pipeline", "design"] },
+          "author": { "type": ["string", "null"] },
+          "deviation_report": { "type": ["string", "null"] },
+          "signoff": { "type": "string", "minLength": 1 },
+          "previous_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "new_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "changed_fields": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "references": {
+      "type": "array",
+      "description": "Optional works the instrument cites (surveyframe 0.4.3), as CSL-JSON records: the format Zotero, Mendeley and pandoc share, so a host can hand them straight to a citation processor. Present only when the instrument has at least one, so an instrument that cites nothing hashes as it did before this field existed. Left out of the amendment content hash: citing a source is disclosure, and adding one to a published instrument needs no amendment.",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "title"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Za-z0-9_]([A-Za-z0-9_:.#$%&+?<>~/-]*[A-Za-z0-9_])?$", "description": "Citation key, cited in text as [@id]. Unique within the instrument." },
+          "type": { "type": "string", "enum": ["article-journal", "book", "chapter", "paper-conference", "report", "thesis", "webpage", "software", "dataset", "manuscript", "document"] },
+          "title": { "type": "string", "minLength": 1 },
+          "author": { "$ref": "#/$defs/cslNames" },
+          "editor": { "$ref": "#/$defs/cslNames" },
+          "issued": {
+            "type": "object",
+            "description": "CSL date: {\"date-parts\": [[year]]}, or {\"literal\": text} when the year is not a number.",
+            "properties": {
+              "date-parts": { "type": "array", "items": { "type": "array", "items": { "type": ["integer", "string"] } } },
+              "literal": { "type": "string" }
+            }
+          },
+          "container-title": { "type": "string", "description": "The journal, or the book a chapter is in." },
+          "volume": { "type": "string" },
+          "issue": { "type": "string" },
+          "page": { "type": "string", "description": "Page range or article number." },
+          "publisher": { "type": "string" },
+          "edition": { "type": "string" },
+          "DOI": { "type": "string", "description": "Without the https://doi.org/ prefix." },
+          "URL": { "type": "string" },
+          "version": { "type": "string" },
+          "language": { "type": "string", "description": "The work's language code, for example fr. A citation style title-cases English titles only." },
+          "cited_by": {
+            "type": "array",
+            "description": "Where the instrument cites this work: \"instrument\", or \"item:<id>\", \"scale:<id>\", \"plan:<block id>\" or \"model:<id>\". Each target must exist in the instrument. A reference with none is read as cited by the instrument as a whole. surveyframe drops this field when it hands the record to a citation processor.",
+            "items": { "type": "string", "pattern": "^(instrument|(item|scale|plan|model):.+)$" }
+          }
+        }
+      }
+    }
   }
 }
